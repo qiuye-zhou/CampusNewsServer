@@ -4,7 +4,7 @@ export const devPORT_CONFIG = 2666;
 
 export const devMONGO_DB = {
   dbName: 'test',
-  host: 'localhost',
+  host: '127.0.0.1',
   port: 27017,
   user: '',
   password: '',
