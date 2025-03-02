@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
     }
     this.attachUserAndToken(
       request,
-      await this.userService.getMaster(),
+      await this.userService.getuser(query.username),
       Authorization,
     );
     return true;

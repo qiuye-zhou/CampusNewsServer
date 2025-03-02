@@ -30,7 +30,7 @@ export class UserController {
   @Post('/register')
   async register(@Body() userDto: UserDto) {
     userDto.name = userDto.name ?? userDto.username;
-    return await this.userservice.createMaster(userDto as UserModel);
+    return await this.userservice.createUser(userDto as UserModel);
   }
 
   @Patch('/updata')

@@ -18,6 +18,9 @@ export class UserModel extends BaseModel {
   @prop({ trim: true })
   name!: string;
 
+  @prop({ required: true, trim: true })
+  grade!: boolean;
+
   @prop()
   introduce?: string;
 

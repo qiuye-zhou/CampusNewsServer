@@ -22,28 +22,28 @@ export class UserService {
     private readonly authservice: AuthService,
   ) {}
 
-  public async getMaster() {
-    const master = await this.userModel.findOne().lean();
-    if (!master) {
-      throw new BadRequestException('我还没有主人');
+  public async hasuser(username: string) {
+    const user = await this.userModel.findOne({ username });
+    if (user) {
+      throw new BadRequestException('该用户名已存在');
     }
-    return master;
+    return user;
+  }
+
+  public async getuser(username: string) {
+    const user = await this.userModel.findOne({ username });
+    return user;
   }
 
   async hasMaster() {
     return !!(await this.userModel.countDocuments());
   }
 
-  async createMaster(
+  async createUser(
     model: Pick<UserModel, 'username' | 'name' | 'password'> &
       Partial<Pick<UserModel, 'introduce' | 'avatar'>>,
   ) {
-    const hasMaster = await this.hasMaster();
-
-    if (hasMaster) {
-      throw new BadRequestException('已经有一个主人了哦');
-    }
-
+    await this.hasuser(model.username);
     const res = await this.userModel.create({ ...model });
     const token = await this.authservice.jwtServicePublic.sign(res.id);
     return { token, username: res.username };
@@ -96,7 +96,7 @@ export class UserService {
   }
 
   /**
-   * 修改密码等Master信息
+   * 修改密码等User信息
    *
    * @async
    * @param {UserDocument} user - 用户查询结果，已经挂载在 req.user
@@ -115,7 +115,7 @@ export class UserService {
         throw new HttpException(
           HttpException.createBody({
             code: 9999,
-            message: '当前不存在Master',
+            message: '当前不存在此用户',
           }),
           500,
         );

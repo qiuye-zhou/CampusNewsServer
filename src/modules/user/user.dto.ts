@@ -37,6 +37,10 @@ export class UserDto extends UserOptionDto {
   @IsString()
   @IsNotEmpty({ message: '密码？' })
   readonly password: string;
+
+  @IsString()
+  @IsNotEmpty({ message: '权限？' })
+  readonly grade: boolean;
 }
 
 export class UserModifyDto extends UserOptionDto {
