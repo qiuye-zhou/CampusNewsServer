@@ -109,9 +109,9 @@ export class UserService {
     await this.hasuser(data.username);
 
     if (password !== undefined) {
-      const { _id } = user;
+      const { id } = user;
       const currentUser = await this.userModel
-        .findById(_id)
+        .findById(id)
         .select('+password +apiToken');
       if (!currentUser) {
         throw new HttpException(
@@ -128,7 +128,7 @@ export class UserService {
       }
       await this.authservice.jwtServicePublic.revokeAll();
     }
-    return await this.userModel.updateOne({ _id: user._id }, docum);
+    return await this.userModel.updateOne({ _id: user.id }, docum);
   }
 
   signout(token: string) {
