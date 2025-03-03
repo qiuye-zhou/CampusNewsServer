@@ -41,7 +41,7 @@ export class UserService {
 
   async createUser(
     model: Pick<UserModel, 'username' | 'name' | 'password'> &
-      Partial<Pick<UserModel, 'introduce' | 'avatar'>>,
+      Partial<UserModel>,
   ) {
     await this.hasuser(model.username);
     const res = await this.userModel.create({ ...model });
@@ -105,6 +105,8 @@ export class UserService {
   async updataUserData(user: UserDocument, data: Partial<UserModel>) {
     const { password } = data;
     const docum = { ...data };
+
+    await this.hasuser(data.username);
 
     if (password !== undefined) {
       const { _id } = user;

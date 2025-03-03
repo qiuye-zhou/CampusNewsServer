@@ -1,32 +1,9 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 class UserOptionDto {
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  readonly introduce?: string;
-
-  @IsEmail()
-  @IsOptional()
-  readonly mail?: string;
-
-  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
-  @IsOptional()
-  readonly url?: string;
-
   @IsString()
   @IsOptional()
   name?: string;
-
-  @IsUrl({ require_protocol: true }, { message: '请更正为正确的网址' })
-  @IsOptional()
-  readonly avatar?: string;
 }
 
 export class UserDto extends UserOptionDto {

@@ -21,12 +21,6 @@ export class UserModel extends BaseModel {
   @prop({ required: true, trim: true })
   grade!: boolean;
 
-  @prop()
-  introduce?: string;
-
-  @prop()
-  avatar?: string;
-
   @prop({
     select: false,
     get(val) {
@@ -38,9 +32,6 @@ export class UserModel extends BaseModel {
     required: true,
   })
   password!: string;
-
-  @prop()
-  mail: string;
 
   @prop()
   lastLoginTime?: Date;
