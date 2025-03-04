@@ -76,8 +76,8 @@ export class JWTService {
     return !!has;
   }
 
-  async sign(id: string, info?: { ip: string; ua: string }) {
-    const token = sign({ id }, this.secret, {
+  async sign(id: string, grade: boolean, info?: { ip: string; ua: string }) {
+    const token = sign({ id, grade }, this.secret, {
       expiresIn: `${JWTService.expiresDay}d`,
     });
     await this.storeTokenInRedis(token, info || {});

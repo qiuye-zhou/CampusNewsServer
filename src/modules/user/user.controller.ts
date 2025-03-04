@@ -49,10 +49,10 @@ export class UserController {
   async login(@Body() dto: LoginDto, @IpLocation() ipLocation: IpRecord) {
     const user = await this.userservice.login(dto.username, dto.password);
     const footstep = await this.userservice.recordFootstep(ipLocation.ip);
-    const { name, username, created, id } = user;
+    const { name, username, created, id, grade } = user;
     const createdTime = new Date(created).toString();
     return {
-      token: await this.authservice.jwtServicePublic.sign(user.id, {
+      token: await this.authservice.jwtServicePublic.sign(user.id, user.grade, {
         ip: ipLocation.ip,
         ua: ipLocation.agent,
       }),
@@ -61,6 +61,7 @@ export class UserController {
       username,
       createdTime,
       id,
+      grade,
     };
   }
 

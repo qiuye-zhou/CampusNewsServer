@@ -45,7 +45,10 @@ export class UserService {
   ) {
     await this.hasuser(model.username);
     const res = await this.userModel.create({ ...model });
-    const token = await this.authservice.jwtServicePublic.sign(res.id);
+    const token = await this.authservice.jwtServicePublic.sign(
+      res.id,
+      res.grade,
+    );
     return { token, username: res.username };
   }
 

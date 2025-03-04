@@ -10,8 +10,8 @@ export class AuthService {
     return this.jwtService;
   }
 
-  async signtoken(id: string) {
-    const token = await this.jwtService.sign(id);
+  async signtoken(id: string, grade: boolean) {
+    const token = await this.jwtService.sign(id, grade);
     return token;
   }
 
