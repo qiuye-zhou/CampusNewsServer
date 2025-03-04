@@ -17,8 +17,11 @@ export class CategoryService {
     return this.categoryModel;
   }
 
-  async create(name: string, type: number, sign?: string) {
-    const res = await this.model.create({ name, type, sign: sign ?? name });
+  async create(name: string, description?: string) {
+    const res = await this.model.create({
+      name,
+      description: description ?? name,
+    });
     return res;
   }
 

@@ -8,19 +8,13 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { isValidObjectId } from 'mongoose';
 
 import { CategoryService } from './category.service';
 import { Auth } from '~/common/decorator/auth.decorator';
-import { CategoryTypeEnum } from './category.model';
 import { MongoIdDto } from '~/shared/dto/id.dto';
-import {
-  BodyCategoryModel,
-  QueryTagAndCategoryDto,
-  SignOrIdDto,
-} from './category.dto';
+import { BodyCategoryModel, SignOrIdDto } from './category.dto';
 import { CannotFindException } from '~/common/exceptions/cantfind.exceptions';
 
 @Controller('category')
@@ -28,16 +22,8 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get('/all')
-  async getCategories(@Query() query: QueryTagAndCategoryDto) {
-    return query.istag
-      ? await this.categoryService.model
-          .find({ type: CategoryTypeEnum.Tag })
-          .lean()
-      : await this.categoryService.model
-          .find({
-            type: CategoryTypeEnum.Category,
-          })
-          .lean();
+  async getCategories() {
+    return this.categoryService.model.find();
   }
 
   @Get('/:query')
@@ -52,7 +38,7 @@ export class CategoryController {
           .sort({ created: -1 })
           .lean()
       : await this.categoryService.model
-          .findOne({ sign: query })
+          .findOne({ name: query })
           .sort({ created: -1 })
           .lean();
 
@@ -65,8 +51,8 @@ export class CategoryController {
   @Post('/add')
   @Auth()
   async create(@Body() body: BodyCategoryModel) {
-    const { name, type, sign } = body;
-    return this.categoryService.create(name, type, sign);
+    const { name, description } = body;
+    return this.categoryService.create(name, description);
   }
 
   @Patch('/:id')
