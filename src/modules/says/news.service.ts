@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 import { InjectModel } from '~/transformers/model.transformer';
-import { SaysModel } from './says.model';
+import { NewsModel } from './news.model';
 
 @Injectable()
-export class SaysService {
+export class NewsService {
   constructor(
-    @InjectModel(SaysModel) private readonly sayModel: MongooseModel<SaysModel>,
+    @InjectModel(NewsModel) private readonly sayModel: MongooseModel<NewsModel>,
   ) {}
 
   public get model() {

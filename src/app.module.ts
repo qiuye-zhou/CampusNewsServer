@@ -15,7 +15,7 @@ import { HttpCacheInterceptor } from './common/interceptors/cache.interceptor';
 import { UserModule } from './modules/user/user.module';
 import { LinkModule } from './modules/link/link.module';
 import { ConfigModule } from './modules/config/config.module';
-import { SaysModule } from './modules/says/says.module';
+import { NewsModule } from './modules/says/news.module';
 import { ReadBooksModule } from './modules/readbooks/readbooks.module';
 import { ProjectModule } from './modules/project/project.module';
 import { CategoryModule } from './modules/category/category.module';
@@ -32,7 +32,7 @@ import { HealthModule } from './modules/health/health.module';
 
     ConfigModule,
     UserModule,
-    SaysModule,
+    NewsModule,
     ReadBooksModule,
     ProjectModule,
     CategoryModule,

@@ -10,23 +10,23 @@ import {
 } from '@nestjs/common';
 import { sample } from 'lodash';
 
-import { SaysModel } from './says.model';
+import { NewsModel } from './news.model';
 import { MongoIdDto } from '~/shared/dto/id.dto';
-import { Auth } from '~/common/decorator/auth.decorator';
-import { SaysService } from './says.service';
+// import { Auth } from '~/common/decorator/auth.decorator';
+import { NewsService } from './news.service';
 
-@Controller('says')
-export class SaysController {
-  constructor(private readonly saysService: SaysService) {}
+@Controller('news')
+export class NewsController {
+  constructor(private readonly newsService: NewsService) {}
 
   @Get('/all')
   async getAll() {
-    return await this.saysService.model.find({}).sort({ created: -1 }).lean();
+    return await this.newsService.model.find({}).sort({ created: -1 }).lean();
   }
 
   @Get('/random')
   async getRandomOne() {
-    const res = await this.saysService.model.find({}).lean();
+    const res = await this.newsService.model.find({}).lean();
     if (res.length === 0) {
       return { data: null };
     }
@@ -36,26 +36,26 @@ export class SaysController {
   @Get('/:id')
   async get(@Param() param: MongoIdDto) {
     const { id } = param;
-    return await this.saysService.model.findById(id).lean();
+    return await this.newsService.model.findById(id).lean();
   }
 
   @Post('/add')
-  @Auth()
-  async create(@Body() body: SaysModel) {
-    const findres = await this.saysService.model.find(body);
+  // @Auth()
+  async create(@Body() body: NewsModel) {
+    const findres = await this.newsService.model.find(body);
     if (findres.length) {
       throw new BadRequestException('已经存在');
     }
-    return await this.saysService.model.create({
+    return await this.newsService.model.create({
       ...body,
       created: new Date(),
     });
   }
 
   @Patch('/:id')
-  @Auth()
-  async patch(@Body() body: SaysModel, @Param() param: MongoIdDto) {
-    await this.saysService.model
+  // @Auth()
+  async patch(@Body() body: NewsModel, @Param() param: MongoIdDto) {
+    await this.newsService.model
       .findOneAndUpdate({ _id: param.id as any }, {
         ...body,
       } as any)
@@ -64,9 +64,9 @@ export class SaysController {
   }
 
   @Delete('/:id')
-  @Auth()
+  // @Auth()
   async delete(@Param() param: MongoIdDto) {
-    await this.saysService.model.deleteOne({ _id: param.id as any });
+    await this.newsService.model.deleteOne({ _id: param.id as any });
     return;
   }
 }
