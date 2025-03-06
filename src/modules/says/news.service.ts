@@ -6,10 +6,10 @@ import { NewsModel } from './news.model';
 @Injectable()
 export class NewsService {
   constructor(
-    @InjectModel(NewsModel) private readonly sayModel: MongooseModel<NewsModel>,
+    @InjectModel(NewsModel) private readonly newModel: MongooseModel<NewsModel>,
   ) {}
 
   public get model() {
-    return this.sayModel;
+    return this.newModel;
   }
 }

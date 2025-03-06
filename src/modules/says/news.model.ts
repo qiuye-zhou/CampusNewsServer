@@ -16,10 +16,16 @@ export class NewsModel extends BaseModel {
   @IsString()
   typename: string;
 
+  @prop({ required: true })
+  editid: string;
+
   @prop()
   @IsString()
   detail: string;
 
   @prop({ default: NewsState[0] })
   state: string;
+
+  @prop({ default: 0 })
+  browsenum: number;
 }
