@@ -15,12 +15,9 @@ import { HttpCacheInterceptor } from './common/interceptors/cache.interceptor';
 import { UserModule } from './modules/user/user.module';
 import { LinkModule } from './modules/link/link.module';
 import { ConfigModule } from './modules/config/config.module';
-import { NewsModule } from './modules/says/news.module';
-import { ReadBooksModule } from './modules/readbooks/readbooks.module';
-import { ProjectModule } from './modules/project/project.module';
+import { NewsModule } from './modules/news/news.module';
 import { CategoryModule } from './modules/category/category.module';
 import { BackupModule } from './modules/backup/backup.module';
-import { InitModule } from './modules/init/init.module';
 import { HealthModule } from './modules/health/health.module';
 
 @Module({
@@ -33,13 +30,10 @@ import { HealthModule } from './modules/health/health.module';
     ConfigModule,
     UserModule,
     NewsModule,
-    ReadBooksModule,
-    ProjectModule,
     CategoryModule,
     LinkModule,
 
     BackupModule,
-    InitModule,
     HealthModule,
     AuthModule,
     HelperModule,
