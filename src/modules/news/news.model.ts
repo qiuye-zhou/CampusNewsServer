@@ -14,7 +14,7 @@ export class NewsModel extends BaseModel {
 
   @prop({ required: true })
   @IsString()
-  typename: string;
+  typename!: string;
 
   @prop({ required: true })
   editid: string;

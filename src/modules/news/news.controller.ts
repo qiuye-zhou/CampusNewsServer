@@ -41,7 +41,20 @@ export class NewsController {
     if (res.length === 0) {
       return { data: null };
     }
-    return { data: sampleSize(res, 3) };
+    return sampleSize(res, 3);
+  }
+
+  @Get('/recently')
+  async getRecentlyOne() {
+    const res = await this.newsService.model
+      .find({})
+      .limit(3)
+      .sort({ created: -1 })
+      .lean();
+    if (res.length === 0) {
+      return { data: null };
+    }
+    return res;
   }
 
   @Get('/:id')
