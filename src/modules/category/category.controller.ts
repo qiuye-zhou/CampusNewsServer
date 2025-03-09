@@ -16,10 +16,14 @@ import { Auth } from '~/common/decorator/auth.decorator';
 import { MongoIdDto } from '~/shared/dto/id.dto';
 import { BodyCategoryModel, SignOrIdDto } from './category.dto';
 import { CannotFindException } from '~/common/exceptions/cantfind.exceptions';
+import { NewsService } from '../news/news.service';
 
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService,
+    private readonly newsService: NewsService,
+  ) {}
 
   @Get('/all')
   async getCategories() {
@@ -45,7 +49,11 @@ export class CategoryController {
     if (!res) {
       throw new CannotFindException();
     }
-    return { data: { ...res, children: '待写：属于该分类或tag的文章' } };
+    const children = await this.newsService.model
+      .find({ typename: res.name })
+      .sort({ created: -1 })
+      .lean();
+    return { ...res, children: children.length == 0 ? null : children };
   }
 
   @Post('/add')
