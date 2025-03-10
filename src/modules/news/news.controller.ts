@@ -52,7 +52,19 @@ export class NewsController {
       .sort({ created: -1 })
       .lean();
     if (res.length === 0) {
-      return { data: null };
+      return null;
+    }
+    return res;
+  }
+
+  @Get('/timeline')
+  async getTimeLine() {
+    const res = await this.newsService.model
+      .find({})
+      .sort({ created: -1 })
+      .lean();
+    if (res.length === 0) {
+      return null;
     }
     return res;
   }
