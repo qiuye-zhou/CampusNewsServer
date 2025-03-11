@@ -35,6 +35,11 @@ export class UserService {
     return user;
   }
 
+  public async getuserbyid(id: string) {
+    const user = await this.userModel.findOne({ _id: id });
+    return user;
+  }
+
   async hasMaster() {
     return !!(await this.userModel.countDocuments());
   }

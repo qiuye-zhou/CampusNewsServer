@@ -17,10 +17,14 @@ import { Auth } from '~/common/decorator/auth.decorator';
 import { NewsService } from './news.service';
 import { GetRequestUser } from '~/common/decorator/user.decorator';
 import { UserDocument } from '../user/user.model';
+import { UserService } from '../user/user.service';
 
 @Controller('news')
 export class NewsController {
-  constructor(private readonly newsService: NewsService) {}
+  constructor(
+    private readonly newsService: NewsService,
+    private readonly userservice: UserService,
+  ) {}
 
   @Get('/all')
   async getAll() {
@@ -73,11 +77,15 @@ export class NewsController {
   async get(@Param() param: MongoIdDto) {
     const { id } = param;
     const newdate = await this.newsService.model.findById(id).lean();
-    return await this.newsService.model
-      .findOneAndUpdate({ _id: id as any }, {
-        browsenum: newdate.browsenum + 1,
-      } as any)
-      .lean();
+    const username = await await this.userservice.getuserbyid(newdate.editid);
+    return {
+      ...(await this.newsService.model
+        .findOneAndUpdate({ _id: id as any }, {
+          browsenum: newdate.browsenum + 1,
+        } as any)
+        .lean()),
+      username: username.name,
+    };
   }
 
   @Post('/add')
