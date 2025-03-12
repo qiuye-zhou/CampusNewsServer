@@ -12,7 +12,7 @@ const Oring: false | string[] = Array.isArray(CROSS_LIST) ? CROSS_LIST : false;
 export async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    allowedHeaders: ['content-type'],
+    allowedHeaders: ['content-type', 'Authorization'],
     origin: Oring,
     credentials: true,
   });
