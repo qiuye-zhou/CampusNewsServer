@@ -61,6 +61,23 @@ export class NewsController {
     return res;
   }
 
+  @Get('/reqtop')
+  async getReqTop() {
+    const res = await this.newsService.model
+      .find({})
+      .limit(3)
+      .sort({ browsenum: -1 })
+      .lean();
+    if (res.length === 0) {
+      return null;
+    }
+    const reslist = [];
+    res.forEach((element) => {
+      reslist.push({ count: element.browsenum, path: element.title });
+    });
+    return reslist;
+  }
+
   @Get('/timeline')
   async getTimeLine() {
     const res = await this.newsService.model
