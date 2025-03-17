@@ -1,3 +1,4 @@
+import { AnalyzeModel } from '~/modules/analyze/analyze.model';
 import { CategoryModel } from '~/modules/category/category.model';
 import { ConfigOptionModel } from '~/modules/config/config.model';
 import { LinkModel } from '~/modules/link/link.model';
@@ -8,6 +9,7 @@ import { getProviderByTypegooseClass } from '~/transformers/model.transformer';
 export const datebaseModules = [
   UserModel,
   NewsModel,
+  AnalyzeModel,
   CategoryModel,
   LinkModel,
   ConfigOptionModel,

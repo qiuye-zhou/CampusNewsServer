@@ -19,12 +19,14 @@ import { GetRequestUser } from '~/common/decorator/user.decorator';
 import { UserDocument } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import { countValues } from '~/utils/countArrObjValues';
+import { AnalyzeService } from '../analyze/analyze.service';
 
 @Controller('news')
 export class NewsController {
   constructor(
     private readonly newsService: NewsService,
     private readonly userservice: UserService,
+    private readonly analyzeService: AnalyzeService,
   ) {}
 
   @Get('/all')
@@ -117,6 +119,12 @@ export class NewsController {
     const { id } = param;
     const newdate = await this.newsService.model.findById(id).lean();
     const username = await await this.userservice.getuserbyid(newdate.editid);
+    const time = new Date();
+    await this.analyzeService.model.create({
+      time: time,
+      Day: time.getDay(),
+      Hours: time.getHours(),
+    });
     return {
       ...(await this.newsService.model
         .findOneAndUpdate({ _id: id as any }, {
