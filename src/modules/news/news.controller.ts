@@ -18,6 +18,7 @@ import { NewsService } from './news.service';
 import { GetRequestUser } from '~/common/decorator/user.decorator';
 import { UserDocument } from '../user/user.model';
 import { UserService } from '../user/user.service';
+import { countValues } from '~/utils/countArrObjValues';
 
 @Controller('news')
 export class NewsController {
@@ -75,6 +76,27 @@ export class NewsController {
     res.forEach((element) => {
       reslist.push({ count: element.browsenum, path: element.title });
     });
+    return reslist;
+  }
+
+  @Get('/typetop')
+  async getTypeTop() {
+    const res = await this.newsService.model
+      .find({})
+      .limit(3)
+      .sort({ browsenum: -1 })
+      .lean();
+    if (res.length === 0) {
+      return null;
+    }
+    const reslist = [];
+    const resMid = countValues(res, 'typename');
+    for (const key in resMid) {
+      if (resMid.hasOwnProperty(key)) {
+        // 确保只遍历对象自身的属性
+        reslist.push({ count: resMid[key], path: key });
+      }
+    }
     return reslist;
   }
 
