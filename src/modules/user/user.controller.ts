@@ -27,6 +27,26 @@ export class UserController {
     private readonly authservice: AuthService,
   ) {}
 
+  @Get('/alladmin')
+  @Auth()
+  async getAllAdmin() {
+    const res = await this.userservice.model.find({ grade: true }).lean();
+    if (res.length === 0) {
+      return { data: [] };
+    }
+    return res;
+  }
+
+  @Get('/alledit')
+  @Auth()
+  async getAlledit() {
+    const res = await this.userservice.model.find({ grade: false }).lean();
+    if (res.length === 0) {
+      return { data: [] };
+    }
+    return res;
+  }
+
   @Post('/register')
   async register(@Body() userDto: UserDto) {
     userDto.name = userDto.name ?? userDto.username;

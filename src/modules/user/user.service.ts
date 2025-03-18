@@ -22,6 +22,10 @@ export class UserService {
     private readonly authservice: AuthService,
   ) {}
 
+  public get model() {
+    return this.userModel;
+  }
+
   public async hasuser(username: string) {
     const user = await this.userModel.findOne({ username });
     if (user) {
