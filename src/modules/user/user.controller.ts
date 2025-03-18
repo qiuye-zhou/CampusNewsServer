@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Param,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -19,6 +20,7 @@ import {
   GetRequestUser,
   GetRequestUserToken,
 } from '~/common/decorator/user.decorator';
+import { MongoIdDto } from '~/shared/dto/id.dto';
 
 @Controller('user')
 export class UserController {
@@ -61,6 +63,13 @@ export class UserController {
     @Body() body: UserUpdataDto,
   ) {
     return await this.userservice.updataUserData(user, body);
+  }
+
+  @Delete('/:id')
+  @Auth()
+  async delete(@Param() param: MongoIdDto) {
+    await this.userservice.model.deleteOne({ _id: param.id as any });
+    return;
   }
 
   @Post('/login')
