@@ -5,6 +5,8 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -76,7 +78,14 @@ export class CategoryController {
   @Auth()
   async deleteCategory(@Param() params: MongoIdDto) {
     const { id } = params;
-
-    return await this.categoryService.deleteById(id);
+    const categoryname = await this.categoryService.model.findById(id);
+    const haveNews = await this.newsService.model.find({
+      typename: categoryname.name,
+    });
+    if (haveNews.length > 0) {
+      throw new HttpException('该类别有新闻，无法删除', HttpStatus.FORBIDDEN);
+    } else {
+      return await this.categoryService.deleteById(id);
+    }
   }
 }
