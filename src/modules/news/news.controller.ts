@@ -32,7 +32,10 @@ export class NewsController {
 
   @Get('/all')
   async getAll() {
-    return await this.newsService.model.find({}).sort({ created: -1 }).lean();
+    return await this.newsService.model
+      .find({ state: NewsState[1] })
+      .sort({ created: -1 })
+      .lean();
   }
 
   @Get('/allpass')
@@ -51,14 +54,19 @@ export class NewsController {
   @Get('/search')
   async getSearch(@Query() query: any) {
     return await this.newsService.model
-      .find({ title: { $regex: query.title, $options: 'i' } })
+      .find({
+        title: { $regex: query.title, $options: 'i' },
+        state: NewsState[1],
+      })
       .sort({ created: -1 })
       .lean();
   }
 
   @Get('/random')
   async getRandomOne() {
-    const res = await this.newsService.model.find({}).lean();
+    const res = await this.newsService.model
+      .find({ state: NewsState[1] })
+      .lean();
     if (res.length === 0) {
       return { data: null };
     }
@@ -68,7 +76,7 @@ export class NewsController {
   @Get('/recently')
   async getRecentlyOne() {
     const res = await this.newsService.model
-      .find({})
+      .find({ state: NewsState[1] })
       .limit(3)
       .sort({ created: -1 })
       .lean();
@@ -81,7 +89,7 @@ export class NewsController {
   @Get('/reqtop')
   async getReqTop() {
     const res = await this.newsService.model
-      .find({})
+      .find({ state: NewsState[1] })
       .limit(3)
       .sort({ browsenum: -1 })
       .lean();
@@ -98,7 +106,7 @@ export class NewsController {
   @Get('/typetop')
   async getTypeTop() {
     const res = await this.newsService.model
-      .find({})
+      .find({ state: NewsState[1] })
       .limit(3)
       .sort({ browsenum: -1 })
       .lean();
@@ -119,7 +127,7 @@ export class NewsController {
   @Get('/timeline')
   async getTimeLine() {
     const res = await this.newsService.model
-      .find({})
+      .find({ state: NewsState[1] })
       .sort({ created: -1 })
       .lean();
     if (res.length === 0) {

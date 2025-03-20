@@ -19,6 +19,7 @@ import { MongoIdDto } from '~/shared/dto/id.dto';
 import { BodyCategoryModel, SignOrIdDto } from './category.dto';
 import { CannotFindException } from '~/common/exceptions/cantfind.exceptions';
 import { NewsService } from '../news/news.service';
+import { NewsState } from '../news/news.state';
 
 @Controller('category')
 export class CategoryController {
@@ -52,7 +53,7 @@ export class CategoryController {
       throw new CannotFindException();
     }
     const children = await this.newsService.model
-      .find({ typename: res.name })
+      .find({ typename: res.name, state: NewsState[1] })
       .sort({ created: -1 })
       .lean();
     return { ...res, children: children.length == 0 ? null : children };
