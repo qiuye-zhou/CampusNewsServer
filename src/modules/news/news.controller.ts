@@ -20,6 +20,7 @@ import { UserDocument } from '../user/user.model';
 import { UserService } from '../user/user.service';
 import { countValues } from '~/utils/countArrObjValues';
 import { AnalyzeService } from '../analyze/analyze.service';
+import { NewsState } from './news.state';
 
 @Controller('news')
 export class NewsController {
@@ -32,6 +33,19 @@ export class NewsController {
   @Get('/all')
   async getAll() {
     return await this.newsService.model.find({}).sort({ created: -1 }).lean();
+  }
+
+  @Get('/allpass')
+  async getAllPass() {
+    const newList = await this.newsService.model
+      .find({ state: NewsState[1] })
+      .sort({ created: -1 })
+      .lean();
+    for (const element of newList) {
+      const editData = await this.userservice.model.findById(element.editid);
+      element.editname = editData.name;
+    }
+    return newList;
   }
 
   @Get('/search')
