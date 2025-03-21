@@ -51,6 +51,32 @@ export class NewsController {
     return newList;
   }
 
+  @Get('/alleditpass')
+  @Auth()
+  async geteditAllPendingPass(@GetRequestUser() user: UserDocument) {
+    const newList = await this.newsService.model
+      .find({
+        state: NewsState[1],
+        editid: user.id,
+      })
+      .sort({ created: -1 })
+      .lean();
+    return newList;
+  }
+
+  @Get('/allpendingpass')
+  @Auth()
+  async getAllPendingPass(@GetRequestUser() user: UserDocument) {
+    const newList = await this.newsService.model
+      .find({
+        state: { $regex: `${NewsState[0]}|${NewsState[2]}`, $options: 'i' },
+        editid: user.id,
+      })
+      .sort({ created: -1 })
+      .lean();
+    return newList;
+  }
+
   @Get('/search')
   async getSearch(@Query() query: any) {
     return await this.newsService.model

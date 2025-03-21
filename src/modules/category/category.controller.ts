@@ -33,6 +33,19 @@ export class CategoryController {
     return this.categoryService.model.find();
   }
 
+  @Get('/allselect')
+  async getCategoriesSelect() {
+    const list = await this.categoryService.model.find();
+    const result = [];
+    list.forEach((ele) => {
+      result.push({
+        label: ele.name,
+        value: ele.name,
+      });
+    });
+    return result;
+  }
+
   @Get('/:query')
   async getCategoryById(@Param() { query }: SignOrIdDto) {
     if (!query) {

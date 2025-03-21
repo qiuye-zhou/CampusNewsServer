@@ -23,6 +23,10 @@ export class NewsModel extends BaseModel {
   @IsString()
   detail: string;
 
+  @prop()
+  @IsString()
+  text: string;
+
   @prop({ default: NewsState[0] })
   state: string;
 
