@@ -77,6 +77,22 @@ export class NewsController {
     return newList;
   }
 
+  @Get('/alladminpendingpass')
+  @Auth()
+  async getAllAdminPendingPass() {
+    const newList = await this.newsService.model
+      .find({
+        state: { $regex: `${NewsState[0]}|${NewsState[2]}`, $options: 'i' },
+      })
+      .sort({ created: -1 })
+      .lean();
+    for (const element of newList) {
+      const editData = await this.userservice.model.findById(element.editid);
+      element.editname = editData.name;
+    }
+    return newList;
+  }
+
   @Get('/search')
   async getSearch(@Query() query: any) {
     return await this.newsService.model
@@ -195,6 +211,17 @@ export class NewsController {
       editid: user.id,
       created: new Date(),
     });
+  }
+
+  @Post('/examinenew')
+  @Auth()
+  async examineNew(@Body() body: any) {
+    await this.newsService.model
+      .findOneAndUpdate({ _id: body.id as MongoIdDto }, {
+        state: body.state,
+      } as any)
+      .lean();
+    return;
   }
 
   @Patch('/:id')
