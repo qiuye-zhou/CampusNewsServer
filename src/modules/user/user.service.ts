@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { InjectModel } from '~/transformers/model.transformer';
 import { UserDocument, UserModel } from './user.model';
 import { sleep } from '~/utils/tool.util';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -82,8 +83,11 @@ export class UserService {
    * @param {string} ip - string
    * @return {Promise<Record<string, Date|string>>} 返回上次登入IP
    */
-  async recordFootstep(ip: string): Promise<Record<string, Date | string>> {
-    const master = await this.userModel.findOne();
+  async recordFootstep(
+    id: Types.ObjectId,
+    ip: string,
+  ): Promise<Record<string, Date | string>> {
+    const master = await this.userModel.findById(id);
     if (!master) {
       throw new HttpException(
         HttpException.createBody({

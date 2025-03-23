@@ -77,7 +77,10 @@ export class UserController {
   @HttpCode(200)
   async login(@Body() dto: LoginDto, @IpLocation() ipLocation: IpRecord) {
     const user = await this.userservice.login(dto.username, dto.password);
-    const footstep = await this.userservice.recordFootstep(ipLocation.ip);
+    const footstep = await this.userservice.recordFootstep(
+      user._id,
+      ipLocation.ip,
+    );
     const { name, username, created, id, grade } = user;
     const createdTime = new Date(created).toString();
     return {
