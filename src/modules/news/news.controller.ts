@@ -39,11 +39,20 @@ export class NewsController {
   }
 
   @Get('/allpass')
-  async getAllPass() {
-    const newList = await this.newsService.model
-      .find({ state: NewsState[1] })
-      .sort({ created: -1 })
-      .lean();
+  @Auth()
+  async getAllPass(@GetRequestUser() user: UserDocument) {
+    let newList = null;
+    if (user.grade) {
+      newList = await this.newsService.model
+        .find({ state: NewsState[1] })
+        .sort({ created: -1 })
+        .lean();
+    } else {
+      newList = await this.newsService.model
+        .find({ state: NewsState[1], editid: user.id })
+        .sort({ created: -1 })
+        .lean();
+    }
     for (const element of newList) {
       const editData = await this.userservice.model.findById(element.editid);
       element.editname = editData.name;
